@@ -1,0 +1,26 @@
+{
+  "name": "automation_playwright_python",
+  "version": "1.0.0",
+  "description": "This repository provides a comprehensive suite of scripts for web automation and end-to-end (E2E) testing using Python with the powerful Playwright framework. The examples range from basic browser navigation to advanced scenarios like handling authentication, managing downloads, and using asynchronous operations.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reinaldorossetti/automation_playwright_python.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/reinaldorossetti/automation_playwright_python/issues"
+  },
+  "homepage": "https://github.com/reinaldorossetti/automation_playwright_python#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.8.1"
+  }
+}

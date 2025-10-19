@@ -11,6 +11,7 @@ data_dir/
 .Python
 build/
 develop-eggs/
+node_modules/
 dist/
 downloads/
 eggs/
@@ -206,3 +207,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
