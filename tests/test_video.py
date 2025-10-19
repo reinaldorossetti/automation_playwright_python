@@ -5,6 +5,18 @@ DOCS_URL = "https://playwright.dev/python/docs/intro"
 
 
 def test_page_has_get_started_link(browser: Browser):
+    """
+    Tests the main navigation of the Playwright site and video recording.
+
+    Step-by-step:
+    1. Creates a new browser context with video recording enabled,
+       configured to save videos in the "video/" directory.
+    2. Opens a new page within this context.
+    3. Navigates to the Playwright for Python homepage.
+    4. Locates and clicks the button to switch the theme (light/dark mode).
+    5. Locates the "GET STARTED" link and clicks it.
+    6. Verifies (asserts) that the final page URL is the expected documentation URL.
+    """
     # example of use context to change folder video
     context = browser.new_context(
         record_video_dir="video/"
