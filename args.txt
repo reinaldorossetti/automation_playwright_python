@@ -1,0 +1,1 @@
+args=["disable-dev-shm-usage", "disable-blink-features=AutomationControlled"]
