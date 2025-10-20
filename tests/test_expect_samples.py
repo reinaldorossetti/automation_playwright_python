@@ -14,12 +14,17 @@ def browser_type_launch_args(browser_type_launch_args):
         "headless": False,  # Set headless to False
     }
 
+@pytest.fixture(autouse=True, scope="function")
+def visit_playwright(page: Page):
+    page.goto("https://playwright.dev/python")
+    yield page
+    page.close()
+
 def test_page_has_get_started_link(page: Page):
     """
     Teste original: Verifica se a página inicial tem um link "GET STARTED"
     e se ele redireciona para a URL de documentação correta.
     """
-    page.goto("https://playwright.dev/python")
 
     # Localizador corrigido para evitar ambiguidade
     header = page.locator("header")
@@ -39,8 +44,6 @@ def test_assertion_examples(page: Page):
     """
     Novo teste: Demonstra várias asserções do Playwright.
     """
-    page.goto("https://playwright.dev/python")
-
     # 1. Asserção de Título: Verifica se o título da página contém um texto específico.
     expect(page).to_have_title(re.compile("Playwright"))
 

@@ -52,6 +52,7 @@ Follow these instructions to set up the project and run the scripts on your loca
     This command downloads the browser binaries for Chromium, Firefox, and WebKit.
     ```sh
     playwright install
+    playwright install-deps
     ```
 
 ## ✅ Running Tests with Pytest
@@ -67,12 +68,18 @@ This project uses `pytest` and the `pytest-playwright` plugin for a seamless tes
 *   **Run tests in a specific browser:**
     ```sh
     pytest --browser chromium
-    # or --browser firefox, --browser webkit
+    # or 
+    --browser firefox
+    --browser webkit
+    --browser-channel msedge
+    --browser-channel chrome
     ```
 
 *   **Run tests in headed mode (to watch the browser):**
     ```sh
     pytest --headed
+    PWDEBUG=1 pytest -s -v tests\\test_expect_samples.py --browser-channel msedge --browser chromium
+    pytest -s -v tests\\test_expect_samples.py
     ```
 
 *   **View test execution traces:**
