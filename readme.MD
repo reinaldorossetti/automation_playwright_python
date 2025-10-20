@@ -53,6 +53,7 @@ Follow these instructions to set up the project and run the scripts on your loca
     ```sh
     playwright install
     playwright install-deps
+    playwright codegen https:playwright.dev/python/
     ```
 
 ## ✅ Running Tests with Pytest
