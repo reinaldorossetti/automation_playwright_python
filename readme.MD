@@ -85,7 +85,7 @@ This project uses `pytest` and the `pytest-playwright` plugin for a seamless tes
 *   **View test execution traces:**
     The `pytest-playwright` plugin automatically generates a trace for failed tests. You can view it with this command:
     ```sh
-    playwright show-trace trace.zip
+    playwright show-trace test-results/tests-test-checkbox-py-test-app-chromium/trace.zip
     ```
 
 ## � Handling Waits in Playwright
