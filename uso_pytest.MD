@@ -1,9 +1,3 @@
-Perfeito, Reinaldo — excelente direção.
-
-Adicionar seções práticas sobre mock de requisições HTTP e integração de fixtures com Playwright torna o guia ainda mais útil para projetos modernos (testes de APIs, automação web, etc.).
-
-A seguir, apresento uma versão aprimorada e expandida do seu guia original, com seções reprojetadas, exemplos realistas, e explicações detalhadas em estilo técnico-profissional (mantendo a fluidez didática).
-
 🧪 Guia Definitivo de Uso do Pytest em Python
 
 Autor: Reinaldo
