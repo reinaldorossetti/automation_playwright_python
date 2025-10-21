@@ -6,35 +6,35 @@ Versão: 2.0 (Atualizada para 2025)
 
 Frameworks abordados: pytest, pytest-xdist, pytest-playwright, pytest-mock
 
-1. 📘 O que é o Pytest?
+## 1. 📘 O que é o Pytest?
 
 O pytest é um dos frameworks de teste mais populares e poderosos do ecossistema Python.
 
 Ele oferece uma forma simples, declarativa e Pythonic de escrever testes — desde unitários até testes de integração e fim a fim.
 
-Principais vantagens:
-Sintaxe Simples: você escreve assert como no Python puro.
-Descoberta Automática: pytest encontra os testes automaticamente.
-Fixtures: permitem gerenciar dependências e estados de teste.
-Ecosistema de Plugins: integração com Django, FastAPI, Playwright, cobertura de código, mocks, paralelização e muito mais.
-Excelente Relatório de Falhas: mensagens ricas e fáceis de ler.
-2. ⚙️ Instalação
+**Principais vantagens:**
+*   **Sintaxe Simples:** você escreve `assert` como no Python puro.
+*   **Descoberta Automática:** pytest encontra os testes automaticamente.
+*   **Fixtures:** permitem gerenciar dependências e estados de teste.
+*   **Ecosistema de Plugins:** integração com Django, FastAPI, Playwright, cobertura de código, mocks, paralelização e muito mais.
+*   **Excelente Relatório de Falhas:** mensagens ricas e fáceis de ler.
+
+## 2. ⚙️ Instalação
 
 É sempre recomendado o uso de um ambiente virtual.
 
-Bash
-Copy
+````bash
 pip install pytest
+````
 
 Plugins úteis:
-Bash
-Copy
+````bash
 pip install pytest-mock pytest-cov pytest-xdist pytest-playwright
+````
 
-3. 🧮 Escrevendo o primeiro teste
+## 3. 🧮 Escrevendo o primeiro teste
 Código a ser testado — calculadora.py
-Python
-Copy
+```python
 def somar(a, b):
     """Soma dois números."""
     return a + b
@@ -42,10 +42,10 @@ def somar(a, b):
 def subtrair(a, b):
     """Subtrai dois números."""
     return a - b
+```
 
 Arquivo de teste — test_calculadora.py
-Python
-Copy
+```python
 from calculadora import somar, subtrair
 
 def test_somar():
@@ -56,19 +56,19 @@ def test_somar():
 def test_subtrair():
     """Testa a subtração simples."""
     assert subtrair(10, 5) == 5
+```
 
 Executar:
-Bash
-Copy
+````bash
 pytest -v
+````
 
-4. ⚡ Fixtures – Injeção de Dependências Reutilizáveis
+## 4. ⚡ Fixtures – Injeção de Dependências Reutilizáveis
 
 Fixtures são funções que preparam um contexto (dados, conexões, objetos) e o injetam nos testes automaticamente.
 
 Fixture simples — test_dados.py
-Python
-Copy
+```python
 import pytest
 
 @pytest.fixture
@@ -82,20 +82,20 @@ def test_verificar_nome(dados_iniciais):
 
 def test_verificar_idade(dados_iniciais):
     assert isinstance(dados_iniciais["idade"], int)
+```
 
 
 Execute com:
 
-Bash
-Copy
+````bash
 pytest -s
+````
 
-5. 🔄 Fixtures com Setup e Teardown
+## 5. 🔄 Fixtures com Setup e Teardown
 
 Use yield dentro da fixture para executar código antes e depois dos testes (setup/teardown).
 
-Python
-Copy
+```python
 @pytest.fixture
 def cliente_db():
     print("\n(SETUP) Conectando ao banco de dados...")
@@ -103,13 +103,13 @@ def cliente_db():
     yield db
     print("\n(TEARDOWN) Desconectando do banco de dados...")
     db.desconectar()
+```
 
-6. 🏷️ Marcadores e Agrupamentos
+## 6. 🏷️ Marcadores e Agrupamentos
 
 Marcadores permitem categorizar e filtrar testes.
 
-Python
-Copy
+```python
 import pytest
 import time, sys
 
@@ -133,25 +133,24 @@ def test_python10():
 @pytest.mark.xfail(reason="Bug conhecido #123")
 def test_com_bug():
     assert 1 == 2
+```
 
-7. 🚀 Testes em Paralelo com pytest-xdist
+## 7. 🚀 Testes em Paralelo com pytest-xdist
 
 Para projetos grandes, paralelize:
 
-Bash
-Copy
+````bash
 pytest -n 4
-
+````
 
 Ou use todos os núcleos disponíveis:
 
-Bash
-Copy
+````bash
 pytest -n auto
+````
 
-8. 🔀 Parametrização de Testes
-Python
-Copy
+## 8. 🔀 Parametrização de Testes
+```python
 import pytest
 from calculadora import somar
 
@@ -162,10 +161,10 @@ from calculadora import somar
 ])
 def test_somar_varios(a, b, resultado):
     assert somar(a, b) == resultado
+```
 
-9. ❌ Testando Exceções
-Python
-Copy
+## 9. ❌ Testando Exceções
+```python
 import pytest
 
 def dividir(a, b):
@@ -176,10 +175,10 @@ def dividir(a, b):
 def test_divisao_erro():
     with pytest.raises(ValueError, match="Divisão por zero"):
         dividir(1, 0)
+```
 
-10. 🔧 Configuração com pytest.ini
-Ini
-Copy
+## 10. 🔧 Configuração com pytest.ini
+```ini
 # filepath: pytest.ini
 [pytest]
 markers =
@@ -188,37 +187,37 @@ markers =
     api: Testes de API
 addopts = -v --tb=short
 python_files = test_*.py *_test.py
+```
 
-11. 📈 Relatório de Cobertura de Código
-Bash
-Copy
+## 11. 📈 Relatório de Cobertura de Código
+````bash
 pytest --cov=calculadora --cov-report=term-missing --cov-report=html
+````
 
 
 Gera um relatório no console e um HTML em htmlcov/index.html.
 
-12. 🧩 Integrando Pytest com Playwright
+## 12. 🧩 Integrando Pytest com Playwright
 
 O plugin pytest-playwright permite automatizar navegadores (Chromium, Firefox, WebKit) facilmente.
 
 Instalação:
-Bash
-Copy
+````bash
 pip install pytest-playwright
 playwright install
+````
 
 Exemplo de Fixture com Page:
-Python
-Copy
+```python
 # filepath: tests/test_google.py
 def test_titulo_google(page):
     """Verifica o título da página principal do Google."""
     page.goto("https://www.google.com")
     assert "Google" in page.title()
+```
 
 Fixture personalizada para login automatizado:
-Python
-Copy
+```python
 import pytest
 
 @pytest.fixture(scope="session")
@@ -237,14 +236,14 @@ def pagina_logada(browser):
 def test_dashboard_acesso(pagina_logada):
     """Verifica se a página do dashboard carrega corretamente."""
     assert "Dashboard" in pagina_logada.title()
+```
 
-13. 🌐 Mockando Requisições com Pytest + Requests + pytest-mock
+## 13. 🌐 Mockando Requisições com Pytest + Requests + pytest-mock
 
 Usar o plugin pytest-mock simplifica o uso de mocks, sem precisar do unittest.mock manualmente.
 
 Exemplo — Mockando uma requisição com requests.get
-Python
-Copy
+```python
 import pytest
 import requests
 
@@ -260,10 +259,10 @@ def test_buscar_usuario_mockado(mocker):
 
     resultado = buscar_usuario()
     assert resultado["nome"] == "Reinaldo"
+```
 
 Mockando Requisição dentro do Playwright:
-Python
-Copy
+```python
 def test_mock_request(page):
     """Simula a resposta de uma API dentro do navegador."""
     page.route("**/api/dados", lambda route: route.fulfill(
@@ -275,21 +274,23 @@ def test_mock_request(page):
     page.goto("https://meusistema.com/dashboard")
     response = page.evaluate("fetch('/api/dados').then(r => r.json())")
     assert response["usuario"] == "mockado"
+```
 
-14. ⏱️ Dicas Avançadas de Uso Diário
-pytest -s → mostra print() no terminal
-pytest -x → para no primeiro erro
-pytest --lf → roda apenas os últimos testes que falharam
-pytest -v -m "smoke and not slow" → filtros de marcadores compostos
-15. 💡 Boas Práticas
-Cada teste deve isolar comportamento independente.
-Nomeie claramente os testes com verbos: test_calcula_media, test_login_sucesso, etc.
-Use fixtures reutilizáveis em conftest.py (escopos: function, class, module, session).
-Sempre use pytest-cov em pipelines CI/CD para medir cobertura.
-Evite chamadas reais de rede; prefira mockar requisições (consistência + performance).
-16. 🌍 Estrutura de Projeto Recomendada
-Plaintext
-Copy
+## 14. ⏱️ Dicas Avançadas de Uso Diário
+*   `pytest -s` → mostra `print()` no terminal
+*   `pytest -x` → para no primeiro erro
+*   `pytest --lf` → roda apenas os últimos testes que falharam
+*   `pytest -v -m "smoke and not slow"` → filtros de marcadores compostos
+
+## 15. 💡 Boas Práticas
+*   Cada teste deve isolar comportamento independente.
+*   Nomeie claramente os testes com verbos: `test_calcula_media`, `test_login_sucesso`, etc.
+*   Use fixtures reutilizáveis em `conftest.py` (escopos: function, class, module, session).
+*   Sempre use `pytest-cov` em pipelines CI/CD para medir cobertura.
+*   Evite chamadas reais de rede; prefira mockar requisições (consistência + performance).
+
+## 16. 🌍 Estrutura de Projeto Recomendada
+```plaintext
 ├── src/
 │   ├── calculadora.py
 │   └── ...
@@ -301,15 +302,16 @@ Copy
 ├── pytest.ini
 ├── requirements.txt
 └── README.md
+```
 
 ✅ Conclusão
 
 Com o pytest, pytest-mock, pytest-cov, pytest-xdist e pytest-playwright, você tem uma suíte completa para:
 
-Testes unitários e de integração
-Testes de interface automatizados
-Mock de chamadas HTTP
-Execução paralela e cobertura de código
-Manutenção facilitada com fixtures organizadas
+*   Testes unitários e de integração
+*   Testes de interface automatizados
+*   Mock de chamadas HTTP
+*   Execução paralela e cobertura de código
+*   Manutenção facilitada com fixtures organizadas
 
 Reinaldo, quer que eu te monte também um exemplo prático de conftest.py completo com fixtures de Playwright e mocks integrados (como um setup real de automação web + API)?
