@@ -180,12 +180,15 @@ def test_divisao_erro():
 ## 10. 🔧 Configuração com pytest.ini
 VS Code
 (rerun without)
-### O arquivo pytest.ini é um arquivo de configuração que permite definir opções padrão para o pytest, evitando a necessidade de digitá-las repetidamente na linha de comando.###
+### O arquivo pytest.ini é um arquivo de configuração que permite definir opções padrão para o pytest, evitando a necessidade de digitá-las repetidamente na linha de comando.
 
 [pytest]: Esta é a seção principal que contém todas as configurações do pytest.
 markers: Registra marcadores personalizados. Isso evita erros de digitação e permite que o pytest saiba quais marcadores são intencionais. No exemplo, smoke, slow e api são registrados com suas descrições.
+
 testpaths: Especifica os diretórios onde o pytest deve procurar por testes. No exemplo, os testes serão procurados apenas na pasta tests.
+
 python_files: Define os padrões de nome de arquivo que o pytest considerará como arquivos de teste. No exemplo, arquivos que começam com test_ ou terminam com _test serão coletados.
+
 addopts: Adiciona opções de linha de comando que serão executadas por padrão em cada execução do pytest. As opções do Playwright são configuradas aqui:
 --browser: Especifica em qual navegador (ou navegadores) os testes devem ser executados. Você pode listar chromium, firefox e webkit.
 --screenshot only-on-failure: Captura uma imagem da tela automaticamente, mas a salva apenas se o teste falhar.
@@ -314,14 +317,15 @@ def test_mock_request(page):
 
 ## 16. 🌍 Estrutura de Projeto Recomendada
 ```plaintext
+/automation_playwright_python
 ├── src/
 │   ├── calculadora.py
 │   └── ...
 ├── tests/
-│   ├── conftest.py        # fixtures globais
+│   ├── conftest.py        # Fixtures globais
 │   ├── test_calculadora.py
 │   ├── test_api_mock.py
-│   └── test_playwright_ui.py
+│   └── test_ui_login.py
 ├── pytest.ini
 ├── requirements.txt
 └── README.md
