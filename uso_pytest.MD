@@ -178,6 +178,21 @@ def test_divisao_erro():
 ```
 
 ## 10. 🔧 Configuração com pytest.ini
+VS Code
+(rerun without)
+### O arquivo pytest.ini é um arquivo de configuração que permite definir opções padrão para o pytest, evitando a necessidade de digitá-las repetidamente na linha de comando.###
+
+[pytest]: Esta é a seção principal que contém todas as configurações do pytest.
+markers: Registra marcadores personalizados. Isso evita erros de digitação e permite que o pytest saiba quais marcadores são intencionais. No exemplo, smoke, slow e api são registrados com suas descrições.
+testpaths: Especifica os diretórios onde o pytest deve procurar por testes. No exemplo, os testes serão procurados apenas na pasta tests.
+python_files: Define os padrões de nome de arquivo que o pytest considerará como arquivos de teste. No exemplo, arquivos que começam com test_ ou terminam com _test serão coletados.
+addopts: Adiciona opções de linha de comando que serão executadas por padrão em cada execução do pytest. As opções do Playwright são configuradas aqui:
+--browser: Especifica em qual navegador (ou navegadores) os testes devem ser executados. Você pode listar chromium, firefox e webkit.
+--screenshot only-on-failure: Captura uma imagem da tela automaticamente, mas a salva apenas se o teste falhar.
+--video retain-on-failure: Grava um vídeo da execução do teste e o mantém somente se o teste falhar.
+--tracing on: Habilita o rastreamento do Playwright, que gera um arquivo de rastreio detalhado para depuração pós-execução.
+--numprocesses 4: Opção do pytest-xdist que executa os testes em paralelo usando 4 processos, acelerando a execução.
+
 ```ini
 # filepath: pytest.ini
 [pytest]
@@ -185,7 +200,15 @@ markers =
     smoke: Testes essenciais de validação
     slow: Testes lentos
     api: Testes de API
-addopts = -v --tb=short
+addopts = 
+    --browser chromium
+    --browser firefox
+    --browser webkit
+    --screenshot only-on-failure
+    --video retain-on-failure
+    --tracing on
+    --numprocesses 4
+testpaths = tests
 python_files = test_*.py *_test.py
 ```
 
