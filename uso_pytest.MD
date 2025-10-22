@@ -133,6 +133,32 @@ def test_python10():
 @pytest.mark.xfail(reason="Bug conhecido #123")
 def test_com_bug():
     assert 1 == 2
+
+### Marcadores Específicos do Playwright
+
+O `pytest-playwright` fornece marcadores especiais para controlar a execução de testes com base no navegador.
+
+```python
+import pytest
+from playwright.sync_api import Page
+
+@pytest.mark.skip_browser("firefox")
+def test_funcionalidade_nao_suportada_no_firefox(page: Page):
+    """
+    Este teste será pulado se estiver sendo executado no Firefox.
+    Será executado em Chromium e WebKit.
+    """
+    page.goto("https://example.com")
+    assert "Example" in page.title()
+
+@pytest.mark.only_browser("chromium")
+def test_funcionalidade_apenas_no_chromium(page: Page):
+    """
+    Este teste será executado APENAS no Chromium.
+    Será pulado em Firefox e WebKit.
+    """
+    page.goto("https://example.com")
+    assert "Example" in page.title()
 ```
 
 ## 7. 🚀 Testes em Paralelo com pytest-xdist
@@ -307,6 +333,7 @@ def test_mock_request(page):
 *   `pytest -x` → para no primeiro erro
 *   `pytest --lf` → roda apenas os últimos testes que falharam
 *   `pytest -v -m "smoke and not slow"` → filtros de marcadores compostos
+*   `pytest tests/nome_do_arquivo_de_teste.py` → roda todos os testes em um arquivo específico
 
 ## 15. 💡 Boas Práticas
 *   Cada teste deve isolar comportamento independente.
@@ -331,7 +358,206 @@ def test_mock_request(page):
 └── README.md
 ```
 
-✅ Conclusão
+## 17. 🔬 Exemplos de fixtures com todos os escopos (Playwright) — explicado
+
+Abaixo há exemplos de fixtures usando pytest-playwright cobrindo todos os escopos suportados pelo pytest: function (padrão), class, module, package e session. Cada exemplo mostra como criar contextos/páginas e quando usar cada escopo.
+
+Importante: pytest-playwright já fornece fixtures úteis como `browser` e `page` (o `page` é function-scoped por padrão). Nos exemplos abaixo usamos a fixture `browser` para criar contextos e páginas manualmente.
+
+### Escopo: function (padrão)
+Isolamento máximo — cria contexto/página para cada teste. Recomendada para maior independência entre testes.
+```python
+import pytest
+
+def test_function_scope(page):  # usa o page fornecido pelo pytest-playwright
+    page.goto("https://example.com")
+    assert "Example" in page.title()
+```
+
+### Escopo: class
+Reusa a mesma página/contexto para todos os testes de uma classe. Útil quando múltiplos testes dentro da classe podem compartilhar estado ou setup custoso.
+```python
+import pytest
+
+@pytest.fixture(scope="class")
+def class_page(browser):
+    context = browser.new_context()
+    page = context.new_page()
+    yield page
+    context.close()
+
+class TestClassScope:
+    def test_a(self, class_page):
+        class_page.goto("https://example.com/a")
+        assert "Example" in class_page.title()
+
+    def test_b(self, class_page):
+        class_page.goto("https://example.com/b")
+        assert "Example" in class_page.title()
+```
+
+### Escopo: module
+Cria uma página/contexto para todos os testes dentro de um módulo (arquivo .py). Boa opção quando vários testes do mesmo módulo compartilham setup.
+```python
+import pytest
+
+@pytest.fixture(scope="module")
+def module_page(browser):
+    ctx = browser.new_context()
+    page = ctx.new_page()
+    yield page
+    ctx.close()
+
+def test_module_1(module_page):
+    module_page.goto("https://example.com/1")
+    assert module_page.url.endswith("/1")
+
+def test_module_2(module_page):
+    module_page.goto("https://example.com/2")
+    assert module_page.url.endswith("/2")
+```
+
+### Escopo: package
+Reusa o mesmo contexto/página para todos os testes em um pacote (diretório com __init__.py). Útil para suites grandes organizadas por pacotes.
+Observação: o `scope="package"` tem efeito quando os testes estão dentro de um pacote Python.
+```python
+import pytest
+
+@pytest.fixture(scope="package")
+def package_context(browser):
+    ctx = browser.new_context()
+    yield ctx
+    ctx.close()
+
+# Em testes dentro do mesmo package, use package_context para criar páginas:
+def test_in_package(page_factory, package_context):
+    page = package_context.new_page()
+    page.goto("https://example.com/package")
+    assert "Example" in page.title()
+    page.close()
+```
+
+### Escopo: session
+Cria o recurso uma vez por sessão de testes (toda execução do pytest). Máxima economia de tempo, porém maior risco de vazamento de estado entre testes — usar com cuidado.
+```python
+import pytest
+
+@pytest.fixture(scope="session")
+def session_context(browser):
+    # abre um contexto que dura toda a sessão de testes
+    ctx = browser.new_context()
+    yield ctx
+    ctx.close()
+
+def test_session_1(session_context):
+    p = session_context.new_page()
+    p.goto("https://example.com/s1")
+    assert "Example" in p.title()
+    p.close()
+
+def test_session_2(session_context):
+    p = session_context.new_page()
+    p.goto("https://example.com/s2")
+    assert "Example" in p.title()
+    p.close()
+```
+
+### Observações e recomendações rápidas
+* Use `function` (padrão) para maior isolamento e testes confiáveis.
+* Use `class` ou `module` quando o setup for custoso e os testes puderem compartilhar estado com segurança.
+* Use `session` ou `package` apenas quando a redução de tempo justificar o risco de vazamento de estado — prefira criar/fechar páginas (page.close()) entre testes.
+* Ao reutilizar contextos/páginas, sempre fechar páginas abertas (`page.close()`) e testar se o estado compartilhado não afeta assertivas.
+
+## 18. 🧩 Pytest‑BDD — exemplos rápidos
+
+Abaixo há exemplos mínimos de uso do pytest-bdd integrados com pytest-playwright: um arquivo feature (Gherkin), definições de passos (step definitions) em Python e uma nota sobre fixtures. Copie os arquivos para a estrutura do projeto indicada e adapte seletores/URLs ao seu sistema.
+
+Breve execução: instale pytest-bdd e execute com `pip install pytest-bdd` e depois `pytest -k login` ou apenas `pytest`.
+
+````gherkin
+# filepath: features/login.feature
+Feature: Login de usuário
+
+  Background:
+    Given the application is running
+
+  Scenario: Login com sucesso
+    Given I open the login page
+    When I submit valid credentials
+    Then I should see the dashboard
+
+  Scenario Outline: Falha de login
+    Given I open the login page
+    When I submit credentials "<user>" "<password>"
+    Then I should see an error message
+
+    Examples:
+      | user    | password |
+      | wrong   | wrong    |
+      | locked  | secret   |
+````
+
+Definições de passos — test_login.py
+```python
+import pytest
+from playwright.sync_api import Page
+
+@pytest.mark.playwright
+@pytest.fixture(scope="feature")
+def dado_aplicacao_em_execucao(page: Page):
+    """Cenário: A aplicação está em execução"""
+    # Supondo que o servidor da aplicação esteja rodando localmente na porta 8000
+    page.goto("http://localhost:8000")
+    yield
+    # Aqui você pode adicionar código para rodar após o teste, se necessário
+
+@pytest.mark.playwright
+def test_login_com_sucesso(page: Page, dado_aplicacao_em_execucao):
+    """Cenário: Login com sucesso"""
+    page.goto("http://localhost:8000/login")
+    page.fill("input[name='username']", "usuario_valido")
+    page.fill("input[name='password']", "senha_valida")
+    page.click("button[type='submit']")
+    page.wait_for_selector("text=Bem-vindo ao seu painel")
+    assert page.url == "http://localhost:8000/dashboard"
+
+@pytest.mark.playwright
+def test_login_falha(page: Page, dado_aplicacao_em_execucao):
+    """Cenário: Falha de login"""
+    page.goto("http://localhost:8000/login")
+    page.fill("input[name='username']", "usuario_invalido")
+    page.fill("input[name='password']", "senha_invalida")
+    page.click("button[type='submit']")
+    page.wait_for_selector("text=Credenciais inválidas")
+    assert page.url == "http://localhost:8000/login"
+```
+
+Nota sobre fixtures:
+
+As fixtures do pytest-bdd (como `given`, `when`, `then`) são usadas para definir o comportamento esperado da aplicação em cada passo do cenário. Elas são automaticamente vinculadas aos testes baseados em suas marcações (por exemplo, `@pytest.mark.playwright`).
+
+## Referências
+
+- Documentação do projeto
+  - README principal: [README.md](./README.md) — visão geral do repositório e instruções de uso.
+  - Documentação interna: [docs/](./docs/) — guias, padrões e exemplos internos (se existir).
+  - Contribuição: [CONTRIBUTING.md](./CONTRIBUTING.md) — normas para commits, PRs e execução de testes no CI.
+  - Arquivos de configuração e fixtures: [conftest.py](./tests/conftest.py) — exemplos de fixtures compartilhadas.
+
+- Documentação oficial e plugins
+  - Pytest: https://docs.pytest.org/
+  - Playwright for Python: https://playwright.dev/python/
+  - pytest-playwright (plugin): https://github.com/microsoft/playwright-pytest
+  - pytest-mock: https://pytest-mock.readthedocs.io/
+  - pytest-xdist (paralelização): https://pypi.org/project/pytest-xdist/
+  - pytest-cov (cobertura): https://pytest-cov.readthedocs.io/
+
+- Comandos úteis / referência rápida
+  - Instalar navegadores Playwright: `playwright install` — veja https://playwright.dev/docs/installation
+  - Executar testes com múltiplos navegadores: `pytest --browser chromium --browser firefox --browser webkit`
+  - Executar testes em paralelo: `pytest -n auto` (requires pytest-xdist)
+
+## ✅ Conclusão
 
 Com o pytest, pytest-mock, pytest-cov, pytest-xdist e pytest-playwright, você tem uma suíte completa para:
 
@@ -341,4 +567,3 @@ Com o pytest, pytest-mock, pytest-cov, pytest-xdist e pytest-playwright, você t
 *   Execução paralela e cobertura de código
 *   Manutenção facilitada com fixtures organizadas
 
-Reinaldo, quer que eu te monte também um exemplo prático de conftest.py completo com fixtures de Playwright e mocks integrados (como um setup real de automação web + API)?
