@@ -1,7 +1,7 @@
 from playwright.sync_api import Page, Locator
 
 
-class PlaywrightPage:
+class SearchPage:
 
     def __init__(self, page: Page):
         self.page = page
