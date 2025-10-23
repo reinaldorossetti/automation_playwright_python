@@ -7,9 +7,6 @@ class LoginPageData:
     password_input: Locator
     login_btn: Locator
     label: Locator
-    username = "dan"
-    password = "cnasdjc"
-    wrong_password = "wrong_password"
 
     def __init__(self, page: Page):
         page.goto("http://uitestingplayground.com/sampleapp")

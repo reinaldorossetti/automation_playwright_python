@@ -5,9 +5,10 @@ from playwright.sync_api import Page, Locator
 class SearchData:
     docs_link: Locator
     search_input: Locator
-    query = "assertions"
+    query: str
 
     def __init__(self, page: Page):
+        self.query = "assertions"
         page.goto("https://playwright.dev/python")
         self.docs_link = page.get_by_role("link", name="Docs")
         self.search_input = page.get_by_placeholder("Search docs")
