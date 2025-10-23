@@ -44,8 +44,7 @@ def test_docs_search(page: Page):
     - Funcionalidade de busca deve estar operacional
     """
     pages = ControllerPages(page)
-    query = "assertions"
-    pages.search(query)
+    pages.search(pages.search_data.query)
     expect(pages.search_results()).to_contain_text(
         "List of assertions"
     )

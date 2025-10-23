@@ -14,7 +14,6 @@ def test_successful_login(page: Page):
     """
 
     login_page = ControllerPages(page)
-
     login_page.login(login_page.login_data.username, 
                      login_page.login_data.password)
 
@@ -34,7 +33,6 @@ def test_failed_login(page: Page):
     Resultado esperado: "Invalid username/password"
     """
     login_page = ControllerPages(page)
-
     login_page.login(login_page.login_data.username, 
                      login_page.login_data.wrong_password)
 
