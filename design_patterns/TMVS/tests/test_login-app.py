@@ -12,16 +12,15 @@ def test_successful_login(page: Page):
     
     Resultado esperado: "Welcome, dan!"
     """
-    username = "dan"
-    password = "pwd"
 
     login_page = ControllerPages(page)
 
-    login_page.login(username, password)
+    login_page.login(login_page.login_data.username, 
+                     login_page.login_data.password)
 
     expect(login_page.login_data.label).to_have_text(
-        f"Welcome, {username}!"
-        )
+        f"Welcome, {login_page.login_data.username}!"
+    )
 
 def test_failed_login(page: Page):
     """
@@ -34,12 +33,10 @@ def test_failed_login(page: Page):
 
     Resultado esperado: "Invalid username/password"
     """
-    username = "dan"
-    password = "cnasdjc"
-
     login_page = ControllerPages(page)
 
-    login_page.login(username, password)
+    login_page.login(login_page.login_data.username, 
+                     login_page.login_data.wrong_password)
 
     expect(login_page.login_data.label).to_have_text(
         "Invalid username/password"
