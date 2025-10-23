@@ -215,12 +215,12 @@ testpaths: Especifica os diretórios onde o pytest deve procurar por testes. No 
 
 python_files: Define os padrões de nome de arquivo que o pytest considerará como arquivos de teste. No exemplo, arquivos que começam com test_ ou terminam com _test serão coletados.
 
-addopts: Adiciona opções de linha de comando que serão executadas por padrão em cada execução do pytest. As opções do Playwright são configuradas aqui:
---browser: Especifica em qual navegador (ou navegadores) os testes devem ser executados. Você pode listar chromium, firefox e webkit.
---screenshot only-on-failure: Captura uma imagem da tela automaticamente, mas a salva apenas se o teste falhar.
---video retain-on-failure: Grava um vídeo da execução do teste e o mantém somente se o teste falhar.
---tracing on: Habilita o rastreamento do Playwright, que gera um arquivo de rastreio detalhado para depuração pós-execução.
---numprocesses 4: Opção do pytest-xdist que executa os testes em paralelo usando 4 processos, acelerando a execução.
+addopts: Adiciona opções de linha de comando que serão executadas por padrão em cada execução do pytest. As opções do Playwright são configuradas aqui:  
+--browser: Especifica em qual navegador (ou navegadores) os testes devem ser executados. Você pode listar chromium, firefox e webkit.  
+--screenshot only-on-failure: Captura uma imagem da tela automaticamente, mas a salva apenas se o teste falhar.  
+--video retain-on-failure: Grava um vídeo da execução do teste e o mantém somente se o teste falhar.  
+--tracing on: Habilita o rastreamento do Playwright, que gera um arquivo de rastreio detalhado para depuração pós-execução.  
+--numprocesses 4: Opção do pytest-xdist que executa os testes em paralelo usando 4 processos, acelerando a execução.  
 
 ```ini
 # filepath: pytest.ini
