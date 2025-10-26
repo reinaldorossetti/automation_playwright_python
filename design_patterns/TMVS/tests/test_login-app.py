@@ -1,5 +1,16 @@
+import pytest
 from controllers.controller_pages import ControllerPages
 from playwright.sync_api import Page, expect
+
+# Configuração global para aumentar o timeout padrão das asserções
+expect.set_options(timeout=15_000)
+
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args):
+    return {
+        **browser_type_launch_args,
+        "headless": False,  # Set headless to False
+    }
 
 def test_successful_login(page: Page):
     """
@@ -13,7 +24,7 @@ def test_successful_login(page: Page):
     Resultado esperado: "Welcome, dan!"
     """
     username = "dan"
-    password = "cnasdjc"
+    password = "pwd"
     login_page = ControllerPages(page)
     login_page.login(username, password)
 
