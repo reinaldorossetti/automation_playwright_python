@@ -1,24 +1,22 @@
 import pytest
-from tasks.login_task import LoginTask
-from questions.login_question import LoginQuestion
 from playwright.sync_api import Page
+from actors.actor import prepare_actor_login_task, prepare_actor_login_question
 
-@pytest.fixture(scope="session")
-def browser_type_launch_args(browser_type_launch_args):
-    return {
-        **browser_type_launch_args,
-        "headless": False,  # Set headless to False
-    }
 
-def test_login_com_sucesso(page: Page):
+@pytest.mark.usefixtures("browser_type_launch_args")
+def test_ct001_realizar_login_com_sucesso(page: Page):
     # Arrange - Preparar o ator
-    login_task = LoginTask(page)
-    login_question = LoginQuestion(page)
+    login_task = prepare_actor_login_task(page)
+    login_question = prepare_actor_login_question(page)
 
     # Act - Executar as ações como tasks
     login_task.acessar_pagina_login()
+
+    # Act - Executar as ações como tasks
     login_task.realizar_login("dan", "pwd")
 
     # Question - Verificar o resultado
     login_question.mensagem_de_boas_vindas("dan")
-    page.close()
+
+    # Cleanup - Fechar a página
+    login_task.fechar_pagina()
