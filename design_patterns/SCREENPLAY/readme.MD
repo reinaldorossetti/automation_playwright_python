@@ -1,24 +1,24 @@
 # 🎭 SCREENPLAY com Playwright e Pytest
 
-Guia passo a passo para configurar, entender e executar o projeto de testes automatizados usando Playwright com o padrao Screenplay.
+Guia passo a passo para configurar, entender e executar o projeto de testes automatizados usando Playwright com o padrão Screenplay.
 
-## 1. 🎯 Visao geral
+## 1. 🎯 Visão geral
 
-- **Objetivo**: automatizar cenarios de login no site Sample App aplicando o padrao Screenplay em Python.
-- **Tecnologias**: Playwright (API sincrona), Pytest, Xdist (execucao paralela) e relatorios padroes do Playwright Test Runner.
-- **Papeis**: `tasks` executam acoes na pagina, `questions` validam resultados e `actors` coordenam esses comportamentos.
+- **Objetivo**: automatizar cenários de login no site Sample App aplicando o padrão Screenplay em Python.
+- **Tecnologias**: Playwright (API síncrona), Pytest, Xdist (execução paralela) e relatórios padrões do Playwright Test Runner.
+- **Papéis**: `tasks` executam ações na página, `questions` validam resultados e `actors` coordenam esses comportamentos.
 
-## 2. 📚 O Padrao Screenplay - Explicado em Detalhes
+## 2. 📚 O Padrão Screenplay - Explicado em Detalhes
 
-### 🤔 O que eh Screenplay?
+### 🤔 O que é Screenplay?
 
-Screenplay eh um padrao de design para testes de automacao que organiza o codigo seguindo a metafora de uma **peca de teatro**:
-- **Ator**: o personagem que executa as acoes.
-- **Tasks (Tarefas)**: o que o ator faz (acoes).
-- **Questions (Questoes)**: o que o ator observa ou valida (verificacoes).
-- **Ability (Habilidade)**: como o ator executa as acoes (ex.: interagir com a pagina web via Playwright).
+Screenplay é um padrão de design para testes de automação que organiza o código seguindo a metáfora de uma **peça de teatro**:
+- **Ator**: o personagem que executa as ações.
+- **Tasks (Tarefas)**: o que o ator faz (ações).
+- **Questions (Questões)**: o que o ator observa ou valida (verificações).
+- **Ability (Habilidade)**: como o ator executa as ações (ex.: interagir com a página web via Playwright).
 
-### Estrutura Basica
+### Estrutura Básica
 
 ```
 ┌─────────────────────────────────────────┐
@@ -45,13 +45,13 @@ Screenplay eh um padrao de design para testes de automacao que organiza o codigo
          ↓                        ↓
 ┌───────────────────────────────────────────┐
 │   Ability: Playwright Page                │
-│   (Capacidade tecnica do ator)            │
+│   (Capacidade técnica do ator)            │
 └───────────────────────────────────────────┘
 ```
 
 ### ✅ Vantagens do Screenplay
 
-1. **Leitura Natural**: Os testes leem como um cenario, nao como comandos tecnicos.
+1. **Leitura Natural**: Os testes leem como um cenário, não como comandos técnicos.
    ```python
    # Sem Screenplay (imperativo):
    page.goto("...")
@@ -63,25 +63,25 @@ Screenplay eh um padrao de design para testes de automacao que organiza o codigo
    login_question.mensagem_de_boas_vindas("dan")
    ```
 
-2. **Reutilizacao**: Tasks e questions sao componentes independentes reutilizaveis.
-   - Uma task pode ser usada em multiplos testes.
-   - Mudancas na tela so afetam a task correspondente.
+2. **Reutilização**: Tasks e questions são componentes independentes reutilizáveis.
+   - Uma task pode ser usada em múltiplos testes.
+   - Mudanças na tela só afetam a task correspondente.
 
-3. **Manutencao Simplificada**: Mudancas na interface afetam apenas uma task/question.
-   - Centralizacao de seletores evita repeticoes.
-   - Um unico lugar para ajustar logic.
+3. **Manutenção Simplificada**: Mudanças na interface afetam apenas uma task/question.
+   - Centralização de seletores evita repetições.
+   - Um único lugar para ajustar lógica.
 
-4. **Escalabilidade**: Facil adicionar novos cenarios sem duplicacao.
-   - Novas combinacoes de tasks/questions com reutilizacao.
+4. **Escalabilidade**: Fácil adicionar novos cenários sem duplicação.
+   - Novas combinações de tasks/questions com reutilização.
    - Arquitetura clara para times maiores.
 
-5. **Legibilidade**: O codigo comunica intencao, nao implementacao.
+5. **Legibilidade**: O código comunica intenção, não implementação.
 
 ### 🔧 Componentes Principais
 
 #### ✏️ A) Tasks (Tarefas - O Que Fazer)
 
-Tasks encapsulam **acoes** que o usuario executa na pagina.
+Tasks encapsulam **ações** que o usuário executa na página.
 
 ```python
 # tasks/login_task.py
@@ -90,11 +90,11 @@ class LoginTask:
         self.page = page
     
     def acessar_pagina_login(self):
-        """Tarefa: Navegar para a pagina de login"""
+        """Tarefa: Navegar para a página de login"""
         self.page.goto("http://uitestingplayground.com/sampleapp")
     
     def realizar_login(self, username: str, password: str):
-        """Tarefa: Preencher formulario e clicar em Login"""
+        """Tarefa: Preencher formulário e clicar em Login"""
         username_input = self.page.get_by_placeholder("User Name")
         password_input = self.page.locator("input[name=\"Password\"]")
         login_btn = self.page.get_by_role("button", name="Log In")
@@ -104,19 +104,19 @@ class LoginTask:
         login_btn.click()
     
     def fechar_pagina(self):
-        """Tarefa: Fechar a pagina"""
+        """Tarefa: Fechar a página"""
         self.page.close()
 ```
 
-**Boas praticas para Tasks:**
-- Um metodo = uma acao logica (micro-tasks).
+**Boas práticas para Tasks:**
+- Um método = uma ação lógica (micro-tasks).
 - Nomes descritivos no imperativo (realizar_login, acessar_pagina).
 - Centralizar todos os seletores.
-- Sem assertions/validacoes (isso eh funcao de questions).
+- Sem assertions/validações (isso é função de questions).
 
-#### 🔍 B) Questions (Questoes - O Que Observar)
+#### 🔍 B) Questions (Questões - O Que Observar)
 
-Questions encapsulam **validacoes** e **verificacoes** de estado.
+Questions encapsulam **validações** e **verificações** de estado.
 
 ```python
 # questions/login_question.py
@@ -127,25 +127,25 @@ class LoginQuestion:
         self.page = page
     
     def mensagem_de_boas_vindas(self, username: str):
-        """Questao: A mensagem de boas-vindas aparece corretamente?"""
+        """Questão: A mensagem de boas-vindas aparece corretamente?"""
         label = self.page.locator("label#loginstatus")
         expect(label).to_have_text(f"Welcome, {username}!")
     
     def campo_senha_visivel(self):
-        """Questao: O campo de senha estah visivel?"""
+        """Questão: O campo de senha está visível?"""
         password_field = self.page.locator("input[name=\"Password\"]")
         expect(password_field).to_be_visible()
 ```
 
-**Boas praticas para Questions:**
-- Nomes interrogativos semanticos (mensagem_de_boas_vindas, usuario_logado).
-- Usar `expect` do Playwright para sincronizacao e legibilidade.
-- Uma verificacao clara por metodo.
+**Boas práticas para Questions:**
+- Nomes interrogativos semânticos (mensagem_de_boas_vindas, usuario_logado).
+- Usar `expect` do Playwright para sincronização e legibilidade.
+- Uma verificação clara por método.
 - Sem efeitos colaterais (leitura apenas).
 
 #### 🎬 C) Actor (Ator - Quem Executa)
 
-Actor eh o orquestrador que:
+Actor é o orquestrador que:
 - Encapsula o acesso a tasks e questions.
 - Gerencia habilidades (abilities) do ator.
 - Conecta o ator ao navegador.
@@ -154,7 +154,7 @@ Actor eh o orquestrador que:
 # actors/actor.py
 class Actor:
     def web_perform(self, task):
-        """Ability: Executar acoes na web"""
+        """Ability: Executar ações na web"""
         return self.browser_type_launch_args(task)
     
     def browser_type_launch_args(self, browser_type_launch_args):
@@ -173,9 +173,9 @@ def prepare_actor_login_question(page):
     return LoginQuestion(page)
 ```
 
-### 📋 D) Teste - Orquestracacao Final
+### 📋 D) Teste - Orquestração Final
 
-O teste monta a historia completa:
+O teste monta a história completa:
 
 ```python
 # tests/test_login.py
@@ -197,7 +197,7 @@ def test_ct001_realizar_login_com_sucesso(page: Page):
 
 **Fluxo AAA (Arrange-Act-Assert):**
 1. **Arrange**: Preparar o ator e seu contexto.
-2. **Act**: Executar acoes (tasks).
+2. **Act**: Executar ações (tasks).
 3. **Assert**: Validar resultado (questions).
 
 ### Exemplo Expandido: Adicionar Novo Cenario
@@ -224,7 +224,7 @@ Se quiser testar logout:
    login_question.usuario_deslogado()
    ```
 
-Sem duplicacao, sem mudanca na arquitetura. Puro Screenplay!
+Sem duplicação, sem mudança na arquitetura. Puro Screenplay!
 
 ## 3. 📋 Requisitos
 
@@ -233,9 +233,9 @@ Sem duplicacao, sem mudanca na arquitetura. Puro Screenplay!
 - Playwright com navegadores instalados (`playwright install`).
 - Sistema operacional testado: Windows (funciona também em Linux e macOS com os mesmos comandos bash).
 
-## 4. 🚀 Passo a passo de configuracao
+## 4. 🚀 Passo a passo de configuração
 
-1. **Clonar o repositorio**
+1. **Clonar o repositório**
 	```bash
 	git clone <url-do-repositorio>
 	cd automation_playwright_python/design_patterns/SCREENPLAY
@@ -245,9 +245,9 @@ Sem duplicacao, sem mudanca na arquitetura. Puro Screenplay!
 	python -m venv .venv
 	source .venv/Scripts/activate  # PowerShell: .venv\Scripts\Activate.ps1
 	```
-3. **Instalar dependencias Python**
+3. **Instalar dependências Python**
 	- Se houver arquivo de requisitos, execute `pip install -r requirements.txt`.
-	- Caso contrario, instale diretamente:
+	- Caso contrário, instale diretamente:
 	  ```bash
 	  pip install playwright pytest pytest-playwright pytest-xdist
 	  ```
@@ -255,55 +255,55 @@ Sem duplicacao, sem mudanca na arquitetura. Puro Screenplay!
 	```bash
 	playwright install
 	```
-5. **Configurar variaveis adicionais (se necessario)**
-	- Nao ha variaveis obrigatorias por padrao; ajuste apenas se o ambiente exigir proxy ou credenciais distintas.
+5. **Configurar variáveis adicionais (se necessário)**
+	- Não há variáveis obrigatórias por padrão; ajuste apenas se o ambiente exigir proxy ou credenciais distintas.
 
 ## 5. 📂 Entendendo a estrutura
 
-- `actors/actor.py`: cria o ator e prepara tasks/questions. Ajusta configuracao do navegador (ex.: modo headless).
-- `tasks/login_task.py`: encapsula cada interacao com a pagina (acessar, logar, fechar).
-- `questions/login_question.py`: valida mensagens ou estados esperados apos as acoes.
-- `tests/test_login.py`: cenario de teste que orquestra tasks e questions.
-- `tests/conftest.py`: fixture Pytest para adaptar `browser_type_launch_args` ao ator (habilita navegacao visivel).
-- `pytest.ini`: define navegadores, paralelismo, coleta de evidencias e pasta `test-reports/`.
+- `actors/actor.py`: cria o ator e prepara tasks/questions. Ajusta configuração do navegador (ex.: modo headless).
+- `tasks/login_task.py`: encapsula cada interação com a página (acessar, logar, fechar).
+- `questions/login_question.py`: valida mensagens ou estados esperados após as ações.
+- `tests/test_login.py`: cenário de teste que orquestra tasks e questions.
+- `tests/conftest.py`: fixture Pytest para adaptar `browser_type_launch_args` ao ator (habilita navegação visível).
+- `pytest.ini`: define navegadores, paralelismo, coleta de evidências e pasta `test-reports/`.
 
 ## 6. 🧪 Executando os testes
 
-1. Certifique-se de que o ambiente virtual esteja ativo e dependencias instaladas.
+1. Certifique-se de que o ambiente virtual esteja ativo e dependências instaladas.
 2. Execute os testes com pytest:
 	```bash
 	pytest
 	```
-	- O arquivo `pytest.ini` ja configura a execucao nos navegadores Chromium, Firefox e WebKit, alem de paralelismo (`--numprocesses 4`).
-	- Screenshots, videos e traces falham somente em caso de erro e sao salvos em `test-reports/`.
+	- O arquivo `pytest.ini` já configura a execução nos navegadores Chromium, Firefox e WebKit, além de paralelismo (`--numprocesses 4`).
+	- Screenshots, vídeos e traces são capturados somente em caso de erro e são salvos em `test-reports/`.
 3. Para limitar navegadores ou desativar paralelismo, sobrescreva os argumentos:
 	```bash
 	pytest --browser chromium --numprocesses 1
 	```
 
-## 7. 🎨 Como expandir cenarios
+## 7. 🎨 Como expandir cenários
 
-- **Novas tasks**: crie um metodo em `tasks/` para cada acao pequena e reutilizavel.
-- **Novas questions**: verifique estados finais (mensagens, elementos visiveis) em `questions/` usando `expect`.
+- **Novas tasks**: crie um método em `tasks/` para cada ação pequena e reutilizável.
+- **Novas questions**: verifique estados finais (mensagens, elementos visíveis) em `questions/` usando `expect`.
 - **Novos testes**: componha tasks e questions no estilo Arrange-Act-Assert em `tests/`.
-- Mantenha os nomes autoexplicativos para facilitar leitura e manutencao.
+- Mantenha os nomes autoexplicativos para facilitar leitura e manutenção.
 
-## 8. 💡 Boas praticas
+## 8. 💡 Boas práticas
 
-- Centralize seletores nas tasks para facilitar manutencao.
-- Evite sleeps; prefira `expect` com Playwright para sincronizacao.
-- Reaproveite ao maximo tasks/questions entre cenarios semelhantes.
-- Automatize formatacao/linters (ex.: `ruff`, `black`) se o projeto crescer.
+- Centralize seletores nas tasks para facilitar manutenção.
+- Evite sleeps; prefira `expect` com Playwright para sincronização.
+- Reaproveite ao máximo tasks/questions entre cenários semelhantes.
+- Automatize formatação/linters (ex.: `ruff`, `black`) se o projeto crescer.
 
-## 9. 🔧 Solucao de problemas
+## 9. 🔧 Solução de problemas
 
 - **Erro de navegadores ausentes**: reexecute `playwright install`.
-- **Ambiente virtual nao ativa**: confira o caminho correto do script de ativacao conforme o shell.
+- **Ambiente virtual não ativa**: confira o caminho correto do script de ativação conforme o shell.
 - **Timeouts**: ajuste `page.set_default_timeout` dentro das tasks ou passe `--timeout` ao pytest.
-- **Execucao lenta**: reduza navegadores via `--browser` ou desative videos/traces temporariamente.
+- **Execução lenta**: reduza navegadores via `--browser` ou desative vídeos/traces temporariamente.
 
-## 10. 🚀 Proximos passos sugeridos
+## 10. 🚀 Próximos passos sugeridos
 
 - Adicionar pipeline CI para executar os testes automaticamente.
-- Gerar relatorios enriquecidos (ex.: Allure) com integracao ao Pytest.
-- Documentar credenciais e ambientes de testes caso va alem do Sample App.
+- Gerar relatórios enriquecidos (ex.: Allure) com integração ao Pytest.
+- Documentar credenciais e ambientes de testes caso vá além do Sample App.
