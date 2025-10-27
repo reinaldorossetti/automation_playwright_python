@@ -249,13 +249,29 @@ Sem duplicação, sem mudança na arquitetura. Puro Screenplay!
 	- Se houver arquivo de requisitos, execute `pip install -r requirements.txt`.
 	- Caso contrário, instale diretamente:
 	  ```bash
-	  pip install playwright pytest pytest-playwright pytest-xdist
+	  pip install playwright pytest pytest-playwright pytest-xdist allure-pytest
 	  ```
 4. **Instalar navegadores do Playwright**
 	```bash
 	playwright install
 	```
-5. **Configurar variáveis adicionais (se necessário)**
+5. **Instalar Allure Command Line (para visualizar relatórios)**
+	- **Windows** (via Scoop):
+	  ```bash
+	  scoop install allure
+	  ```
+	- **macOS** (via Homebrew):
+	  ```bash
+	  brew install allure
+	  ```
+	- **Linux** (manual):
+	  ```bash
+	  wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+	  tar -zxvf allure-2.24.0.tgz
+	  sudo mv allure-2.24.0 /opt/allure
+	  sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+	  ```
+6. **Configurar variáveis adicionais (se necessário)**
 	- Não há variáveis obrigatórias por padrão; ajuste apenas se o ambiente exigir proxy ou credenciais distintas.
 
 ## 5. 📂 Entendendo a estrutura
@@ -281,29 +297,83 @@ Sem duplicação, sem mudança na arquitetura. Puro Screenplay!
 	pytest --browser chromium --numprocesses 1
 	```
 
-## 7. 🎨 Como expandir cenários
+## 7. 📊 Visualizando Relatórios Allure
+
+O projeto está configurado para gerar relatórios detalhados com Allure Report.
+
+### Gerando e visualizando o relatório:
+
+1. **Executar os testes** (os resultados são salvos em `allure-results/`):
+	```bash
+	pytest
+	```
+
+2. **Gerar e abrir o relatório HTML**:
+	```bash
+	allure serve allure-results
+	```
+	- Isso abre automaticamente o relatório no navegador.
+
+3. **Ou gerar relatório estático**:
+	```bash
+	allure generate allure-results -o allure-report --clean
+	```
+	- Para visualizar: `allure open allure-report`
+
+### Recursos do Allure no projeto:
+
+- ✅ **Features e Stories**: Organização por funcionalidade (ex.: "Autenticação" > "Login de Usuário")
+- ✅ **Steps detalhados**: Cada ação do teste aparece como um step visível
+- ✅ **Severidade**: Classificação de criticidade dos testes (CRITICAL, NORMAL, etc.)
+- ✅ **Descrições ricas**: Título e descrição clara de cada cenário
+- ✅ **Screenshots e vídeos**: Anexados automaticamente em caso de falha (via Playwright)
+- ✅ **Histórico de execuções**: Rastreamento de tendências ao longo do tempo
+- ✅ **Gráficos e métricas**: Taxa de sucesso, duração, categorias de falhas
+
+### Estrutura de anotações Allure no código:
+
+```python
+@allure.feature("Autenticação")  # Módulo/Feature
+@allure.story("Login de Usuário")  # História de usuário
+@allure.title("CT001 - Realizar login com sucesso")  # Título do teste
+@allure.description("Descrição detalhada do cenário")  # Descrição
+@allure.severity(allure.severity_level.CRITICAL)  # Severidade
+def test_exemplo():
+    with allure.step("Passo 1: Acessar página"):
+        # código
+    with allure.step("Passo 2: Preencher formulário"):
+        # código
+```
+
+## 8. 🎨 Como expandir cenários
 
 - **Novas tasks**: crie um método em `tasks/` para cada ação pequena e reutilizável.
 - **Novas questions**: verifique estados finais (mensagens, elementos visíveis) em `questions/` usando `expect`.
 - **Novos testes**: componha tasks e questions no estilo Arrange-Act-Assert em `tests/`.
 - Mantenha os nomes autoexplicativos para facilitar leitura e manutenção.
 
-## 8. 💡 Boas práticas
+## 9. 💡 Boas práticas
 
 - Centralize seletores nas tasks para facilitar manutenção.
 - Evite sleeps; prefira `expect` com Playwright para sincronização.
 - Reaproveite ao máximo tasks/questions entre cenários semelhantes.
 - Automatize formatação/linters (ex.: `ruff`, `black`) se o projeto crescer.
+- **Use anotações Allure**: Adicione `@allure.feature`, `@allure.story`, `@allure.step` para documentação visual.
+- **Organize por severidade**: Classifique testes críticos com `@allure.severity(allure.severity_level.CRITICAL)`.
 
-## 9. 🔧 Solução de problemas
+## 10. 🔧 Solução de problemas
 
 - **Erro de navegadores ausentes**: reexecute `playwright install`.
 - **Ambiente virtual não ativa**: confira o caminho correto do script de ativação conforme o shell.
 - **Timeouts**: ajuste `page.set_default_timeout` dentro das tasks ou passe `--timeout` ao pytest.
 - **Execução lenta**: reduza navegadores via `--browser` ou desative vídeos/traces temporariamente.
+- **Allure não encontrado**: certifique-se de que o Allure CLI está instalado (`allure --version`).
+- **Relatório vazio**: verifique se a pasta `allure-results/` contém arquivos JSON após a execução.
 
-## 10. 🚀 Próximos passos sugeridos
+## 11. 🚀 Próximos passos sugeridos
 
-- Adicionar pipeline CI para executar os testes automaticamente.
-- Gerar relatórios enriquecidos (ex.: Allure) com integração ao Pytest.
+- Adicionar pipeline CI para executar os testes automaticamente e publicar relatórios Allure.
+- Integrar Allure TestOps para gestão centralizada de testes.
 - Documentar credenciais e ambientes de testes caso vá além do Sample App.
+- Adicionar testes de API usando o mesmo padrão Screenplay.
+- Configurar notificações (Slack, email) com resumo dos relatórios Allure.
