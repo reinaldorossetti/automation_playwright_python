@@ -10,7 +10,7 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.57.0-noble
+      image: mcr.microsoft.com/playwright/python:v1.50.0-noble
 
     steps:
       - uses: actions/checkout@v3
@@ -24,8 +24,8 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # - name: Ensure browsers are installed
-      #   run: python -m playwright install --with-deps
+      - name: Ensure browsers are installed
+        run: python -m playwright install --with-deps
 
       - name: Run Playwright tests (container)
         run: pytest tests
