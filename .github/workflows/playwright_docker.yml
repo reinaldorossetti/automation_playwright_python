@@ -1,4 +1,4 @@
-name: Tests
+name: Tests Com Docker e Python
 on:
   - push
 
