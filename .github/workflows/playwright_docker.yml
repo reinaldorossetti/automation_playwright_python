@@ -1,12 +1,16 @@
 name: Tests
-
 on:
   - push
 
+permissions:
+  contents: write
+
 jobs:
 
-  test:
+  test-docker:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
 
     steps:
       - uses: actions/checkout@v3
@@ -22,11 +26,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Ensure browsers are installed
-        run: python -m playwright install chromium --with-deps
+        run: python -m playwright install --with-deps
 
-      - name: Run tests
-        run: |
-          cd cubeit
-          python -m http.server 8000 &
-          cd ..
-          pytest -v
+      - name: Run Playwright tests (container)
+        run: pytest tests
