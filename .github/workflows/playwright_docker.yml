@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
       
       - name: Run Playwright tests (container)
-        run: pytest tests --tracing=retain-on-failure
+        run: xvfb-run --auto-servernum -- pytest tests --tracing=retain-on-failure
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }} 
         with:
