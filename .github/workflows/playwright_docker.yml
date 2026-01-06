@@ -15,4 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Playwright tests (container)
-        run: docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.57.0-noble /bin/bash -c "pip install -r requirements.txt && pytest tests --tracing=retain-on-failure"
+        run: docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.57.0-noble /bin/bash -c "pip install --upgrade pip && pip install -r requirements.txt && pytest tests --tracing=retain-on-failure"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }} 
+        with:
+          name: playwright-traces
+          path: test-results/
