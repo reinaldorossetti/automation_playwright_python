@@ -1,9 +1,7 @@
 name: Tests
+
 on:
   - push
-
-permissions:
-  contents: write
 
 jobs:
 
@@ -26,5 +24,9 @@ jobs:
       - name: Ensure browsers are installed
         run: python -m playwright install chromium --with-deps
 
-      - name: Run Playwright tests
-        run: pytest tests
+      - name: Run tests
+        run: |
+          cd cubeit
+          python -m http.server 8000 &
+          cd ..
+          pytest -v

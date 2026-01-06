@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from playwright.sync_api import Page, Locator
 
 @dataclass
-class SearchData:
+class SearchPageData:
     docs_link: Locator
     search_input: Locator
     query: str

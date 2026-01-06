@@ -26,7 +26,7 @@ def test_successful_login(page: Page):
     username = "dan"
     password = "pwd"
     login_page = ControllerPages(page)
-    login_page.login(username, password)
+    login_page.realizar_login(username, password)
 
     expect(login_page.login_data.label).to_have_text(
         f"Welcome, {username}!"
@@ -44,7 +44,7 @@ def test_failed_login(page: Page):
     Resultado esperado: "Invalid username/password"
     """
     pages = ControllerPages(page)
-    pages.login("dan", "wrong_password")
+    pages.realizar_login("dan", "wrong_password")
 
     expect(pages.login_data.label).to_have_text(
         "Invalid username/password"

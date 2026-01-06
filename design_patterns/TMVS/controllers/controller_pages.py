@@ -1,6 +1,6 @@
 from playwright.sync_api import Page, Locator
 from models.login_data import LoginPageData
-from models.search_data import SearchData
+from models.search_data import SearchPageData
 
 
 class ControllerPages:
@@ -10,18 +10,18 @@ class ControllerPages:
         self.login_data = None
         self.search_data = None
 
-    def login(self, username, password):
+    def realizar_login(self, username, password):
         self.login_data = LoginPageData(self.page)
         self.login_data.username_input.fill(username)
         self.login_data.password_input.fill(password)
         self.login_data.login_btn.click()
 
     def visit_docs(self):
-        self.search_data = SearchData(self.page)
+        self.search_data = SearchPageData(self.page)
         self.search_data.docs_link.click()
 
     def search(self, query):
-        self.search_data = SearchData(self.page)
+        self.search_data = SearchPageData(self.page)
         self.page.keyboard.press("Control+KeyK")
         self.search_data.search_input.fill(query)
 
