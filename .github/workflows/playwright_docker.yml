@@ -10,7 +10,7 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright/python:v1.57.0-noble
+      image: mcr.microsoft.com/playwright/python:v1.55.0-noble
 
     steps:
       - uses: actions/checkout@v3
