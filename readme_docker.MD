@@ -4,9 +4,8 @@
 
 O `Dockerfile` é a sua porta de entrada para rodar scripts do Playwright em um ambiente Dockerizado! 📦 Essa imagem já vem com os navegadores do Playwright e todas as dependências de sistema necessárias.
 
-Para realizar o Paralelismo de testes com múltiplos navegadores, usamos o "pytest -n" ou "pytest --numprocesses auto" do pacote `pytest-xdist`, você também pode especificar um valor fixo de processos "pytest -n 4" ou "pytest --numprocesses 4". Isso por que estamos usando o Python como linguagem de automação.
+Para realizar o Paralelismo de testes com múltiplos navegadores, usamos o "pytest -n" ou "pytest --numprocesses auto" do pacote `pytest-xdist`, você também pode especificar um valor fixo de processos "pytest -n 4" ou "pytest --numprocesses 4". Tudo Isso por que estamos usando o Python como linguagem de automação. No caso do Node.js, o paralelismo é gerenciado nativamente pelo Playwright Test Runner.
 
-No caso do Node.js, o paralelismo é gerenciado nativamente pelo Playwright Test Runner.
 Exemplo de comando para rodar 4 workers no Node.js:
 ```
 npx playwright test --workers 4
@@ -14,6 +13,11 @@ npx playwright test --workers 4
 Para desativar o paralelismo, use `--workers=1`.
 ```
 npx playwright test --workers=1
+```
+
+** No projeto está configurado o paralelismo com pytest-xdist, no arquivo abaixo no projeto:  
+```bash
+pytest.ini
 ```
 
 Para configurar o número de workers no CI, sem usar ele no comando acima, adicione a seguinte configuração no seu arquivo de configuração do Playwright:

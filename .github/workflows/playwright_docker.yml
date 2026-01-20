@@ -27,15 +27,21 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          npm install -g allure-commandline
 
       - name: Run Playwright tests (container)
         continue-on-error: true
         run: xvfb-run --auto-servernum -- pytest tests --alluredir=./output/allure
     
-      - name: 📊 Collect Allure files and generate allure-report folder
-        run: |
-          allure generate ./output/allure -o allure-results/
+      - name: Generate Allure Report
+        uses: andgineer/allure-report@v3.6
+        if: always()
+        with:
+          allure-results: output/allure # Directory with test results
+          website: allure-results          # Directory to store the report
+          reports-site: allure-results
+          reports-site-path: allure-results
+          github-pages: github-pages
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }} 
         with:
@@ -46,6 +52,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages  # default: gh-pages
+          publish_branch: gh-pages
           publish_dir: allure-results
           destination_dir: allure-results
