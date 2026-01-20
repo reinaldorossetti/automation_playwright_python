@@ -8,6 +8,7 @@ __pycache__/
 playwright/
 data_dir/
 test-results/
+allure-results/
 # Distribution / packaging
 .Python
 build/
