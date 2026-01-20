@@ -1,12 +1,37 @@
-# 🐳 Playwright com Docker: Guia Completo para QA 🚀
+# 🐳 Playwright com Docker e Paralelismo na Esteira de CI/CD: Guia Completo para QA 🚀
 
-## 📜 Introdução
+## 📜 Introdução ao paralelismo nos testes.
 
-O `Dockerfile.noble` é a sua porta de entrada para rodar scripts do Playwright em um ambiente Dockerizado! 📦 Essa imagem já vem com os navegadores do Playwright e todas as dependências de sistema necessárias.
+O `Dockerfile` é a sua porta de entrada para rodar scripts do Playwright em um ambiente Dockerizado! 📦 Essa imagem já vem com os navegadores do Playwright e todas as dependências de sistema necessárias.
 
-🚨 **Importante:** O pacote/dependência do Playwright em si **não** está incluído na imagem e deve ser instalado separadamente.
+Para realizar o Paralelismo de testes com múltiplos navegadores, usamos o "pytest -n" ou "pytest --numprocesses auto" do pacote `pytest-xdist`, você também pode especificar um valor fixo de processos "pytest -n 4" ou "pytest --numprocesses 4". Isso por que estamos usando o Python como linguagem de automação.
 
----
+No caso do Node.js, o paralelismo é gerenciado nativamente pelo Playwright Test Runner.
+Exemplo de comando para rodar 4 workers no Node.js:
+```
+npx playwright test --workers 4
+```
+Para desativar o paralelismo, use `--workers=1`.
+```
+npx playwright test --workers=1
+```
+
+Para configurar o número de workers no CI, sem usar ele no comando acima, adicione a seguinte configuração no seu arquivo de configuração do Playwright:
+
+```typescript
+
+playwright.config.ts
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  // Limit the number of workers on CI, use default locally
+  workers: process.env.CI ? 2 : undefined,
+});
+```
+
+Projeto: https://github.com/reinaldorossetti/automation_playwright_python/tree/main  
+ já está configurado para rodar com paralelismo no CI/CD usando GitHub Actions, confira o arquivo `.github/workflows/playwright_docker.yml`.  
+
 
 ## 🛠️ Como Usar
 
@@ -14,12 +39,23 @@ A imagem Docker oficial é publicada no **Microsoft Artifact Registry**.
 
 > ℹ️ **Info:** Essa imagem Docker destina-se **apenas** para fins de desenvolvimento e testes. ⚠️ **Não é recomendado** usá-la para visitar sites não confiáveis.
 
-### 📥 Baixando a Imagem (Pull)
+Podemos consultar as imagens disponíveis no [Microsoft Container Registry](https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags).
 
+### 📥 Baixando a Imagem (Pull)  
+A versão mais atual é a `v1.57.0` (Junho de 2024). Substitua pela versão desejada conforme necessário. Mas isso pode mudar com o tempo, então sempre verifique a [página oficial](https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags) para as versões mais recentes.
+
+Versões para x86  
 ```bash
 docker pull mcr.microsoft.com/playwright:v1.57.0-noble
 docker pull mcr.microsoft.com/playwright:v1.57.0-jammy
 docker pull mcr.microsoft.com/playwright:v1.57.0
+```
+
+Versões específicas para arquitetura ARM64 e AMD64
+```bash
+docker pull mcr.microsoft.com/playwright:v1.57.0-noble-amd64
+docker pull mcr.microsoft.com/playwright:v1.57.0-jammy-arm64
+docker pull mcr.microsoft.com/playwright:v1.57.0-amd64
 ```
 
 ### 🏃‍♂️ Rodando a Imagem
@@ -202,7 +238,7 @@ Leve seus testes para a esteira de CI/CD! 🚀
 
 ### 👷 Workers no CI
 
-Recomendamos `workers: 1` no CI para estabilidade (evita *flaky tests* por concorrência de recursos).
+Recomendamos `workers: 2` no CI para estabilidade (evita *flaky tests* por concorrência de recursos).
 
 **playwright.config.ts:**
 ```typescript
@@ -210,7 +246,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   // Desabilita paralelismo no CI para maior estabilidade
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 2 : undefined,
 });
 ```
 
