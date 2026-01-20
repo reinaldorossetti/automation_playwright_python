@@ -318,7 +318,7 @@ jobs:
       
       - name: Run Playwright tests (container)
         # --auto-servernum: Garante um display livre automaticamente (evita erros de CI) 🛑🛡️
-        run: xvfb-run --auto-servernum -- pytest tests --tracing=retain-on-failure
+        run: xvfb-run --auto-servernum -- pytest tests --tracing=retain-on-failure --numprocesses 2
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }} 
         with:
