@@ -307,39 +307,57 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
 
   test-docker:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright/python:v1.55.0-noble
+      image: mcr.microsoft.com/playwright/python:v1.57.0-noble
+      options: --user root
     
     env:
       HOME: /root
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Necessário para histórico do Allure
       
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-      
+
       - name: Run Playwright tests (container)
-        # --auto-servernum: Garante um display livre automaticamente (evita erros de CI) 🛑🛡️
-        run: xvfb-run --auto-servernum -- pytest tests --tracing=retain-on-failure --numprocesses 2
+        continue-on-error: true
+        run: xvfb-run --auto-servernum -- pytest tests --alluredir=./output/allure
+    
+      - name: Generate Allure Report
+        uses: andgineer/allure-report@v3.6
+        if: always()
+        with:
+          allure-results: output/allure # Directory with test results
+          website: allure-results          # Directory to store the report
+          reports-site: allure-results
+          reports-site-path: allure-results
+          github-pages: github-pages
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }} 
         with:
           name: playwright-traces
-          path: test-results/
-      - uses: actions/upload-artifact@v5
-        if: ${{ !cancelled() }}
+          path: allure-results/
+          
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-results
+          destination_dir: allure-results
 ```
 No exemplo do nosso projeto acima, removemos os steps de instalação do Playwright e navegadores, pois a imagem Docker já os inclui. Caso tiver a necessidade de instalar pacotes adicionais, adicione um step antes de rodar os testes:
 ```bash

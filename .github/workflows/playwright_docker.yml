@@ -40,7 +40,6 @@ jobs:
           website: allure-results          # Directory to store the report
           reports-site: allure-results
           reports-site-path: allure-results
-          github-pages: github-pages
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }} 
