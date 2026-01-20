@@ -63,7 +63,7 @@ docker pull mcr.microsoft.com/playwright:v1.57.0-amd64
 
 Como estou usando uma versão especifica para Python, ela está numa versão mais antiga, segue abaixo a imagem:  
 ```bash
-docker pull mcr.microsoft.com/playwright/python:v1.55.0-noble
+docker pull mcr.microsoft.com/playwright/python:v1.57.0-noble
 ```
 Link: https://mcr.microsoft.com/en-us/artifact/mar/playwright/python/about
 
