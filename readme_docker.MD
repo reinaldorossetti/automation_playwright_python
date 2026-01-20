@@ -43,7 +43,6 @@ A imagem Docker oficial é publicada no **Microsoft Artifact Registry**.
 
 > ℹ️ **Info:** Essa imagem Docker destina-se **apenas** para fins de desenvolvimento e testes. ⚠️ **Não é recomendado** usá-la para visitar sites não confiáveis.
 
-Podemos consultar as imagens disponíveis no [Microsoft Container Registry](https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags).
 
 ### 📥 Baixando a Imagem (Pull)  
 A versão mais atual é a `v1.57.0` (Junho de 2024). Substitua pela versão desejada conforme necessário. Mas isso pode mudar com o tempo, então sempre verifique a [página oficial](https://mcr.microsoft.com/en-us/artifact/mar/playwright/tags) para as versões mais recentes.
@@ -61,6 +60,13 @@ docker pull mcr.microsoft.com/playwright:v1.57.0-noble-amd64
 docker pull mcr.microsoft.com/playwright:v1.57.0-jammy-arm64
 docker pull mcr.microsoft.com/playwright:v1.57.0-amd64
 ```
+
+Como estou usando uma versão especifica para Python, ela está numa versão mais antiga, segue abaixo a imagem:  
+```bash
+docker pull mcr.microsoft.com/playwright/python:v1.55.0-noble
+```
+Link: https://mcr.microsoft.com/en-us/artifact/mar/playwright/python/about
+
 
 ### 🏃‍♂️ Rodando a Imagem
 
