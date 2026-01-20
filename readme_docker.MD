@@ -177,6 +177,12 @@ CMD ["pytest"]
 
 ---
 
+** No nosso dockerfile, usamos uma versão do container do PW:
+Dockerfile
+```dockerfile
+FROM mcr.microsoft.com/playwright:v1.57.0-noble
+```
+
 ## 🔄 Integração Contínua (CI)
 
 Leve seus testes para a esteira de CI/CD! 🚀
@@ -289,6 +295,12 @@ jobs:
           path: playwright-report/
           retention-days: 30
 ```
+No exemplo do nosso projeto acima, removemos os steps de instalação do Playwright e navegadores, pois a imagem Docker já os inclui. Caso tiver a necessidade de instalar pacotes adicionais, adicione um step antes de rodar os testes:
+```bash
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
 ```
 
 #### Via Containers (Recomendado para consistência visual)
