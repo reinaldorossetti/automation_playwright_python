@@ -1,0 +1,92 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","97","test_update_user","tests.api","Tue Jan 20 14:48:11 GMT 2026","passed","Tue Jan 20 14:48:11 GMT 2026","","test_methods","",""
+"","83","test_create_user","tests.api","Tue Jan 20 14:48:12 GMT 2026","failed","Tue Jan 20 14:48:12 GMT 2026","","test_methods","",""
+"","240","test_user_api[webkit]","tests.api","Tue Jan 20 14:48:11 GMT 2026","passed","Tue Jan 20 14:48:11 GMT 2026","","test_mock","",""
+"","201","test_page_has_docs_link[firefox]","tests","Tue Jan 20 14:47:58 GMT 2026","passed","Tue Jan 20 14:47:58 GMT 2026","","test_hook","",""
+"","93","test_page_has_docs_link[firefox]","tests","Tue Jan 20 14:47:43 GMT 2026","passed","Tue Jan 20 14:47:43 GMT 2026","","test_page_fixture","",""
+"","0","test_visits_google_account[webkit]","tests","Tue Jan 20 14:48:10 GMT 2026","skipped","Tue Jan 20 14:48:10 GMT 2026","","test_args","",""
+"
+    Teste original: Verifica se a página inicial tem um link ""GET STARTED""
+    e se ele redireciona para a URL de documentação correta.
+    ","1008","test_page_has_get_started_link[firefox]","tests","Tue Jan 20 14:47:37 GMT 2026","passed","Tue Jan 20 14:47:38 GMT 2026","","test_expect_samples","",""
+"","303","test_get_started_visits_docs[chromium]","tests","Tue Jan 20 14:47:30 GMT 2026","passed","Tue Jan 20 14:47:31 GMT 2026","","test_page_fixture","",""
+"","98","test_page_has_docs_link[chromium]","tests","Tue Jan 20 14:47:30 GMT 2026","passed","Tue Jan 20 14:47:30 GMT 2026","","test_page_fixture","",""
+"","295","test_users_api[chromium]","tests.api","Tue Jan 20 14:47:47 GMT 2026","failed","Tue Jan 20 14:47:47 GMT 2026","","test_api","",""
+"","1125","test_get_started_visits_docs[firefox]","tests","Tue Jan 20 14:47:45 GMT 2026","passed","Tue Jan 20 14:47:46 GMT 2026","","test_page_fixture","",""
+"","547","test_user_api[firefox]","tests.api","Tue Jan 20 14:47:50 GMT 2026","passed","Tue Jan 20 14:47:50 GMT 2026","","test_mock","",""
+"","540","test_page_has_docs_link[webkit]","tests","Tue Jan 20 14:48:12 GMT 2026","passed","Tue Jan 20 14:48:13 GMT 2026","","test_args","",""
+"","1530","test_page_has_docs_link[firefox]","tests","Tue Jan 20 14:47:35 GMT 2026","passed","Tue Jan 20 14:47:37 GMT 2026","","test_args","",""
+"
+    Teste original: Verifica se a página inicial tem um link ""GET STARTED""
+    e se ele redireciona para a URL de documentação correta.
+    ","1416","test_page_has_get_started_link[webkit]","tests","Tue Jan 20 14:48:00 GMT 2026","passed","Tue Jan 20 14:48:01 GMT 2026","","test_expect_samples","",""
+"","886","test_users_api[firefox]","tests.api","Tue Jan 20 14:47:47 GMT 2026","failed","Tue Jan 20 14:47:48 GMT 2026","","test_api","",""
+"","2037","test_app[webkit]","tests","Tue Jan 20 14:47:55 GMT 2026","passed","Tue Jan 20 14:47:57 GMT 2026","","test_checkbox","",""
+"","471","test_users_api[webkit]","tests.api","Tue Jan 20 14:48:10 GMT 2026","failed","Tue Jan 20 14:48:11 GMT 2026","","test_api","",""
+"","783","test_get_started_visits_docs[chromium]","tests","Tue Jan 20 14:47:28 GMT 2026","passed","Tue Jan 20 14:47:29 GMT 2026","","test_hook","",""
+"","207","test_page_has_docs_link[webkit]","tests","Tue Jan 20 14:48:03 GMT 2026","passed","Tue Jan 20 14:48:03 GMT 2026","","test_hook","",""
+"","853","test_get_started_visits_docs[webkit]","tests","Tue Jan 20 14:48:06 GMT 2026","passed","Tue Jan 20 14:48:07 GMT 2026","","test_page_fixture","",""
+"","3422","test_visits_google_account[chromium]","tests","Tue Jan 20 14:47:26 GMT 2026","passed","Tue Jan 20 14:47:30 GMT 2026","","test_args","",""
+"","528","test_get_started_visits_docs[webkit]","tests","Tue Jan 20 14:48:19 GMT 2026","passed","Tue Jan 20 14:48:20 GMT 2026","","test_hook","",""
+"","1454","test_get_started_visits_docs[firefox]","tests","Tue Jan 20 14:47:39 GMT 2026","passed","Tue Jan 20 14:47:40 GMT 2026","","test_hook","",""
+"
+    Tests the main navigation of the Playwright site and video recording.
+
+    Step-by-step:
+    1. Creates a new browser context with video recording enabled,
+       configured to save videos in the ""video/"" directory.
+    2. Opens a new page within this context.
+    3. Navigates to the Playwright for Python homepage.
+    4. Locates and clicks the button to switch the theme (light/dark mode).
+    5. Locates the ""GET STARTED"" link and clicks it.
+    6. Verifies (asserts) that the final page URL is the expected documentation URL.
+    ","459","test_page_has_get_started_link[chromium]","tests","Tue Jan 20 14:47:31 GMT 2026","passed","Tue Jan 20 14:47:32 GMT 2026","","test_video","",""
+"
+    Teste original: Verifica se a página inicial tem um link ""GET STARTED""
+    e se ele redireciona para a URL de documentação correta.
+    ","363","test_page_has_get_started_link[chromium]","tests","Tue Jan 20 14:47:27 GMT 2026","passed","Tue Jan 20 14:47:27 GMT 2026","","test_expect_samples","",""
+"
+    Tests the main navigation of the Playwright site and video recording.
+
+    Step-by-step:
+    1. Creates a new browser context with video recording enabled,
+       configured to save videos in the ""video/"" directory.
+    2. Opens a new page within this context.
+    3. Navigates to the Playwright for Python homepage.
+    4. Locates and clicks the button to switch the theme (light/dark mode).
+    5. Locates the ""GET STARTED"" link and clicks it.
+    6. Verifies (asserts) that the final page URL is the expected documentation URL.
+    ","1996","test_page_has_get_started_link[webkit]","tests","Tue Jan 20 14:48:08 GMT 2026","passed","Tue Jan 20 14:48:10 GMT 2026","","test_video","",""
+"","15925","test_ajax[chromium]","tests","Tue Jan 20 14:47:27 GMT 2026","passed","Tue Jan 20 14:47:42 GMT 2026","","test_ajax","",""
+"
+    Novo teste: Demonstra várias asserções do Playwright.
+    ","16567","test_assertion_examples[firefox]","tests","Tue Jan 20 14:47:40 GMT 2026","failed","Tue Jan 20 14:47:56 GMT 2026","","test_expect_samples","",""
+"","0","test_visits_google_account[firefox]","tests","Tue Jan 20 14:47:37 GMT 2026","skipped","Tue Jan 20 14:47:37 GMT 2026","","test_args","",""
+"","1465","test_app[chromium]","tests","Tue Jan 20 14:47:30 GMT 2026","passed","Tue Jan 20 14:47:32 GMT 2026","","test_checkbox","",""
+"
+    Novo teste: Demonstra várias asserções do Playwright.
+    ","15984","test_assertion_examples[chromium]","tests","Tue Jan 20 14:47:29 GMT 2026","failed","Tue Jan 20 14:47:44 GMT 2026","","test_expect_samples","",""
+"","91","test_remove_user","tests.api","Tue Jan 20 14:48:11 GMT 2026","passed","Tue Jan 20 14:48:11 GMT 2026","","test_methods","",""
+"","88","test_users_search","tests.api","Tue Jan 20 14:48:11 GMT 2026","failed","Tue Jan 20 14:48:11 GMT 2026","","test_user_search","",""
+"","494","test_page_has_docs_link[chromium]","tests","Tue Jan 20 14:47:43 GMT 2026","passed","Tue Jan 20 14:47:43 GMT 2026","","test_args","",""
+"","16446","test_ajax[webkit]","tests","Tue Jan 20 14:47:55 GMT 2026","passed","Tue Jan 20 14:48:12 GMT 2026","","test_ajax","",""
+"","197","test_page_has_docs_link[webkit]","tests","Tue Jan 20 14:48:04 GMT 2026","passed","Tue Jan 20 14:48:05 GMT 2026","","test_page_fixture","",""
+"","16669","test_ajax[firefox]","tests","Tue Jan 20 14:47:52 GMT 2026","passed","Tue Jan 20 14:48:09 GMT 2026","","test_ajax","",""
+"
+    Tests the main navigation of the Playwright site and video recording.
+
+    Step-by-step:
+    1. Creates a new browser context with video recording enabled,
+       configured to save videos in the ""video/"" directory.
+    2. Opens a new page within this context.
+    3. Navigates to the Playwright for Python homepage.
+    4. Locates and clicks the button to switch the theme (light/dark mode).
+    5. Locates the ""GET STARTED"" link and clicks it.
+    6. Verifies (asserts) that the final page URL is the expected documentation URL.
+    ","3665","test_page_has_get_started_link[firefox]","tests","Tue Jan 20 14:47:45 GMT 2026","passed","Tue Jan 20 14:47:49 GMT 2026","","test_video","",""
+"","412","test_user_api[chromium]","tests.api","Tue Jan 20 14:47:48 GMT 2026","passed","Tue Jan 20 14:47:49 GMT 2026","","test_mock","",""
+"","1251","test_app[firefox]","tests","Tue Jan 20 14:47:34 GMT 2026","passed","Tue Jan 20 14:47:35 GMT 2026","","test_checkbox","",""
+"","90","test_page_has_docs_link[chromium]","tests","Tue Jan 20 14:47:27 GMT 2026","passed","Tue Jan 20 14:47:27 GMT 2026","","test_hook","",""
+"
+    Novo teste: Demonstra várias asserções do Playwright.
+    ","16792","test_assertion_examples[webkit]","tests","Tue Jan 20 14:48:02 GMT 2026","failed","Tue Jan 20 14:48:19 GMT 2026","","test_expect_samples","",""
