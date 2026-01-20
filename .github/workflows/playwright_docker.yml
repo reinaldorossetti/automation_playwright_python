@@ -32,24 +32,18 @@ jobs:
       - name: Run Playwright tests (container)
         continue-on-error: true
         run: xvfb-run --auto-servernum -- pytest tests --alluredir=./output/allure
-      
+    
+      - name: 📊 Collect Allure files and generate allure-report folder
+        run: |
+          allure generate ./output/allure -o allure-results/
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }} 
         with:
           name: playwright-traces
-          path: test-results/
-      
-      - name: 📊 Collect Allure files and generate allure-report folder
-        run: |
-          allure generate ./output/allure -o allure-results/
-      - name: 🎁 Publishing Allure artifact to GitHub Actions
-        uses: actions/upload-artifact@v3
-        with:
-          name: my_reports
-          path: my_reports
+          path: allure-results/
           
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages  # default: gh-pages
